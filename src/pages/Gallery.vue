@@ -1,6 +1,11 @@
 <template>
     <div class="container">
         <h1>Галерея</h1>
+        <div class="gallery">
+            <div class="gallery__item" v-for="item in data">
+                {{item.height}}
+            </div>
+        </div>
     </div>
 </template>
 
@@ -21,7 +26,7 @@
                     per_page: 5
                 })
                     .then((response) => {
-                        console.log(response)
+                        this.data = response.data
                     })
             }
         }
