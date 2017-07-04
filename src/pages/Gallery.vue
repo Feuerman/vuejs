@@ -3,7 +3,7 @@
         <h1>Галерея</h1>
         <div class="gallery">
             <div class="gallery__item" v-for="item in data">
-                {{item.created_at}}
+                {{item.height}}
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@
                     per_page: 5
                 })
                     .then((response) => {
-                        this.data = response.data
+                        console.log(response)
                     })
             }
         }
