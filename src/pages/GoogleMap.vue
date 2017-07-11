@@ -1,47 +1,58 @@
 <template>
     <div class="container">
-        <div class="destination">
-            <div class="destination__item" @click="setDestinationMode('start')">
-                <b>Start: </b>
-                <gmap-autocomplete @place_changed="setWaypoint"></gmap-autocomplete>
-            </div>
-            <div class="destination__item" @click="setDestinationMode('end')">
-                <b>End: </b>
-                <gmap-autocomplete @place_changed="setWaypoint"></gmap-autocomplete>
-            </div>
-        </div>
-        <div class="map">
-            <gmap-map
-                    ref="map"
-                    :center="center"
-                    :zoom="10"
-                    style="width: 100%; height: 100%"
-            >
-            </gmap-map>
-            <transition name="fade">
-                <button class="direction-btn" @click="showPanel" v-if="direction.steps.length"><</button>
-            </transition>
-            <transition name="slide-right">
-                <div class="direction" v-if="direction.showPanel">
-                    <div class="direction__step"
-                        v-for="item in direction.steps"
-                        @click="showDirectionLine(item)"
-                    >
-                        <div class="direction__step-instructions" v-html="item.instructions"></div>
-                        <div class="direction__step-distance" v-html="item.distance.text"></div>
-                        <div class="direction__step-duration" v-html="item.duration.text"></div>
-                    </div>
-                </div>
-            </transition>
-        </div>
+        <!--<div class="destination">-->
+            <!--<div class="destination__item" @click="setDestinationMode('start')">-->
+                <!--<b>Start: </b>-->
+                <!--<gmap-autocomplete @place_changed="setWaypoint"></gmap-autocomplete>-->
+            <!--</div>-->
+            <!--<div class="destination__item" @click="setDestinationMode('end')">-->
+                <!--<b>End: </b>-->
+                <!--<gmap-autocomplete @place_changed="setWaypoint"></gmap-autocomplete>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="map">-->
+            <!--<gmap-map-->
+                    <!--ref="map"-->
+                    <!--:center="center"-->
+                    <!--:zoom="10"-->
+                    <!--style="width: 100%; height: 100%"-->
+            <!--&gt;-->
+            <!--</gmap-map>-->
+            <!--<transition name="fade">-->
+                <!--<button class="direction-btn" @click="showPanel" v-if="direction.steps.length"><</button>-->
+            <!--</transition>-->
+            <!--<transition name="slide-right">-->
+                <!--<div class="direction" v-if="direction.showPanel">-->
+                    <!--<div class="direction__step"-->
+                        <!--v-for="item in direction.steps"-->
+                        <!--@click="showDirectionLine(item)"-->
+                    <!--&gt;-->
+                        <!--<div class="direction__step-instructions" v-html="item.instructions"></div>-->
+                        <!--<div class="direction__step-distance" v-html="item.distance.text"></div>-->
+                        <!--<div class="direction__step-duration" v-html="item.duration.text"></div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</transition>-->
+        <!--</div>-->
+        <v-map style="height: 500px; width: 100%;" :zoom="zoom" :center="center">
+            <v-tilelayer :url="url" :attribution="attribution"></v-tilelayer>
+            <v-marker :lat-lng="marker"></v-marker>
+        </v-map>
     </div>
 </template>
 
 <script>
+    import Vue2Leaflet from 'vue2-leaflet';
+
     export default {
+        components: {
+            'v-map': Vue2Leaflet.Map,
+            'v-tilelayer' :Vue2Leaflet.TileLayer,
+            'v-marker': Vue2Leaflet.Marker
+        },
         data () {
             return {
-                center: {lat: 10.0, lng: 10.0},
+//                center: {lat: 10.0, lng: 10.0},
                 destination: {
                     inputMode: '',
                     start: {
@@ -57,7 +68,12 @@
                     showPanel: false,
                     steps: []
                 },
-                flightPath: {}
+                flightPath: {},
+                zoom:13,
+                center: L.latLng(47.413220, -1.219482),
+                url:'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+                attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+                marker: L.latLng(47.413220, -1.219482),
             }
         },
         mounted() {

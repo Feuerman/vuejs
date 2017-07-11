@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div>
         <b-navbar toggleable fixed="top" type="inverse" variant="primary">
             <div class="container">
                 <b-nav-toggle target="nav_collapse"></b-nav-toggle>
@@ -44,9 +44,25 @@
         <main>
             <router-view></router-view>
         </main>
+        <div class="test"></div>
+        <object class="test1" type="image/svg+xml" data="close.svg"></object>
     </div>
 </template>
 <script>
 </script>
 
 <style src="./app.scss" lang="scss"></style>
+<style>
+    @import "../node_modules/leaflet/dist/leaflet.css";
+</style>
+<style lang="scss">
+    .test {
+        background-image: url('static/svg/close.svg');
+    }
+
+    .test1 {
+        svg {
+            stroke: #f00!important;
+        }
+    }
+</style>

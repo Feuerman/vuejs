@@ -4,8 +4,9 @@
             <form @submit="addComment">
                 <input type="text" v-model="name">
             </form>
+            <input type="text" v-model="filter">
             <button @click="sort">sort</button>
-            <Comment v-for="(item, key) in comments" :key="key" :data="item"></Comment>
+            <Comment v-for="(item, key) in filteredCommetns" :key="key" :data="item"></Comment>
         </div>
     </div>
 </template>
@@ -17,7 +18,19 @@
         data() {
             return {
                 comments: [],
-                name: ''
+                name: '',
+                filter: ''
+            }
+        },
+        computed: {
+            filteredCommetns() {
+                let comments = this.comments
+                if(this.filter) {
+                    comments = comments.filter((item) => {
+                        return item.text.indexOf(this.filter) > -1
+                    })
+                }
+                return comments;
             }
         },
         components: { Comment },
